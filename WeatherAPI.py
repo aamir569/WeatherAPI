@@ -13,6 +13,24 @@ def requestRespone( url ):
     responseJson = responseFromServer.json()
     return responseJson;
 
+def MinimumMaximumDateInRange():
+    MinimumAndMaximumDateInRange = []
+    MinimumAndMaximumDateInRange.append(0)
+    MinimumAndMaximumDateInRange.append(0)
+    firstIteration = 0
+    for loca in responseInJson['locations.csv']:
+        if firstIteration == 0:
+            MinimumAndMaximumDateInRange[0] = loca.get('date_first')
+            MinimumAndMaximumDateInRange[1] = loca.get('date_last')
+        if (loca.get('date_first') < MinimumAndMaximumDateInRange[0]):
+            MinimumAndMaximumDateInRange[0]  = loca.get('date_first')
+        if (loca.get('date_last') < MinimumAndMaximumDateInRange[1]):
+            MinimumAndMaximumDateInRange[1] = loca.get('date_last')
+        firstIteration = 1
+    return MinimumAndMaximumDateInRange
+
+MinimumAndMaximumDateInRange = MinimumMaximumDateInRange()
+
 locationId = []
 precipProbability = []
 days = []
@@ -56,8 +74,8 @@ for loca in responseInJson['locations.csv']:
 numberOfDaysInLargestRange = int(noOfDays/locationId.__len__())
 precipProbabilityForEachDay = [precipProbability[x:x+numberOfDaysInLargestRange] for x in range(0, len(precipProbability), numberOfDaysInLargestRange)]
 
-
-
-df = pd.DataFrame(precipProbabilityForEachDay, columns = days, index =  locationId )
-df.index.name = 'Location ID'
-df
+print(days)
+print(precipProbabilityForEachDay)
+#df = pd.DataFrame(precipProbabilityForEachDay, columns = days, index =  locationId )
+#df.index.name = 'Location ID'
+#df
